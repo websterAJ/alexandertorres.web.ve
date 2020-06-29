@@ -1,0 +1,22 @@
+
+[Sun, 07 Jun 2020 18:06:48 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(183): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(67): dataaccesslayer->Insert('actividades', Array)
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(87): dashboardmodel->insertData(Array, 'actividades')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->clases()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'event' in 'field list'
+[Sun, 07 Jun 2020 18:11:15 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(149): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(57): dataaccesslayer->Update('actividades', '_BASE_URL_index...', 'id = ')
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(101): dashboardmodel->updateData('_BASE_URL_index...', 'actividades', 'id = ')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->clases()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE id =' at line 1
+[Sun, 07 Jun 2020 18:55:32 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(149): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(57): dataaccesslayer->Update('actividades', '_BASE_URL_index...', 'id = 8')
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(102): dashboardmodel->updateData('_BASE_URL_index...', 'actividades', 'id = 8')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->clases()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE id = 8' at line 1

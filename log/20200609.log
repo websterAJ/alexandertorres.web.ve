@@ -1,0 +1,22 @@
+
+[Tue, 09 Jun 2020 17:41:40 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(183): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(67): dataaccesslayer->Insert('articulo', Array)
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(369): dashboardmodel->insertData(Array, 'articulo')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->new()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'alexandertorres.articulo' doesn't exist
+[Tue, 09 Jun 2020 17:47:32 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(183): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(67): dataaccesslayer->Insert('', Array)
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(369): dashboardmodel->insertData(Array, '')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->new()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(`data`) VALUES ("[object Object]")' at line 1
+[Tue, 09 Jun 2020 17:48:40 -0400] #0 C:\xampp\htdocs\alexandertorres.com.ve\core\dataaccesslayer.php(183): PDOStatement->execute()
+#1 C:\xampp\htdocs\alexandertorres.com.ve\models\dashboardmodel.php(67): dataaccesslayer->Insert('', Array)
+#2 C:\xampp\htdocs\alexandertorres.com.ve\controllers\dashboard.php(369): dashboardmodel->insertData(Array, '')
+#3 C:\xampp\htdocs\alexandertorres.com.ve\core\frontcontroller.php(77): dashboard->new()
+#4 C:\xampp\htdocs\alexandertorres.com.ve\index.php(20): frontcontroller->__CONSTRUCT()
+#5 {main}
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(`data`) VALUES ("[object Object]")' at line 1

@@ -1,0 +1,13 @@
+{
+    "name": "alexander/alexandertorres.com.ve",
+    "authors": [
+        {
+            "name": "websterAj",
+            "email": "alexander20012@hotmail.com"
+        }
+    ],
+    "require": {
+        "php":"^7.0.0",
+        "vlucas/phpdotenv": "^4.1"
+    }
+}
