@@ -11,34 +11,36 @@ class frontcontroller
 	{
 		//	0 => 'Raíz del Proyecto' 1=> 'index.php' 1 => 'Controlador'	3 => 'Accion' 4 => 'Parametros Adicionales'
 		$this->Uri = explode('/', substr($_SERVER['REQUEST_URI'], 1, strlen($_SERVER['REQUEST_URI']) -1));
+		
 		// Preguntamos si existe en la URL actual una llamada a algun controlador especifico
-		if(count($this->Uri) == 2)
+		if(count($this->Uri) == 2 || count($this->Uri) < 2)
 		{
 			$this->Controller = _DEFAULT_CONTROLLER_;
 		}
 		elseif(count($this->Uri) > 2)
 		{
+			
 			// Si en la URL por defecto no hay referencia de un controlador, cargamos el que esta por defecto
-			if($this->Uri[2] == '' || $this->Uri[2] == '/')
+			if($this->Uri[1] == '' || $this->Uri[1] == 'index.php')
 			{
 				$this->Controller = _DEFAULT_CONTROLLER_;
 			}
 			else
 			{			
 				// Verificamos si es un Area
-				if(is_dir( _BASE_FOLDER_ . 'controllers/' . $this->Uri[2] ))
+				if(is_dir( _BASE_FOLDER_ . 'controllers/' . $this->Uri[1] ))
 				{
 					$this->Area = $this->Uri[2];
 					$this->Controller = str_replace('/', '', $this->Uri[3]);
 				}
 				else
 				{
-					$this->Controller = str_replace('/', '', $this->Uri[2]);
+					$this->Controller = str_replace('/', '', $this->Uri[1]);
 				}
 			}
 
 			// Si se ha especificado la acción
-			$i = $this->Area == null ? 3 : 4;
+			$i = $this->Area == null ? 2 : 3;
 			if(isset($this->Uri[$i]))
 			{
 				if($this->Uri[$i] != '' && $this->Uri[$i] != '/')
