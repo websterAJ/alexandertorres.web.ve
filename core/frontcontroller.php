@@ -9,49 +9,101 @@ class frontcontroller
 	// Constructor
 	public function __CONSTRUCT($reload=false)
 	{
-		//	0 => 'Raíz del Proyecto' 1=> 'index.php' 1 => 'Controlador'	3 => 'Accion' 4 => 'Parametros Adicionales'
-		$this->Uri = explode('/', substr($_SERVER['REQUEST_URI'], 1, strlen($_SERVER['REQUEST_URI']) -1));
-		// Preguntamos si existe en la URL actual una llamada a algun controlador especifico
-		if(count($this->Uri) == 2)
-		{
-			$this->Controller = _DEFAULT_CONTROLLER_;
-		}
-		elseif(count($this->Uri) > 2)
-		{
-			// Si en la URL por defecto no hay referencia de un controlador, cargamos el que esta por defecto
-			if($this->Uri[2] == '' || $this->Uri[2] == '/')
-			{
+		/**
+		 * 0 => 'Raíz del Proyecto'
+		 * 1 => 'index.php'
+		 * 2 => 'Controlador'
+		 * 3 => 'Accion'
+		 * 4 => 'Parametros Adicionales'
+		 */
+		$this->Uri = explode(
+			'/', 
+			substr($_SERVER['REQUEST_URI'], 
+			1,
+			strlen($_SERVER['REQUEST_URI']) -1)
+		);
+		/**
+		 * verificamos el modo que se va a utilizar el sistema
+		 */
+		if (MODE == "PROD") {
+			// Preguntamos si existe en la URL actual una llamada a algun controlador especifico
+			if(count($this->Uri) == 2 || count($this->Uri) < 2){
+
 				$this->Controller = _DEFAULT_CONTROLLER_;
-			}
-			else
-			{			
-				// Verificamos si es un Area
-				if(is_dir( _BASE_FOLDER_ . 'controllers/' . $this->Uri[2] ))
+
+			}elseif(count($this->Uri) > 2){
+				
+				/**
+				 * Si en la URL por defecto no hay referencia de un controlador, 
+				 * cargamos el que esta por defecto
+				 */
+				if($this->Uri[2] == '' || $this->Uri[2] == '/' || $this->Uri[2] == 'index')
 				{
-					$this->Area = $this->Uri[2];
-					$this->Controller = str_replace('/', '', $this->Uri[3]);
+					$this->Controller = _DEFAULT_CONTROLLER_;
 				}
 				else
+				{			
+					// Verificamos si es un Area
+					if(is_dir( _BASE_FOLDER_ . 'controllers/' . $this->Uri[1] ))
+					{
+						$this->Area = $this->Uri[2];
+						$this->Controller = str_replace('/', '', $this->Uri[3]);
+					}
+					else
+					{
+						$this->Controller = str_replace('/', '', $this->Uri[1]);
+					}
+				}
+
+				// Si se ha especificado la acción
+				$i = $this->Area == null ? 2 : 3;
+				if(isset($this->Uri[$i]))
 				{
-					$this->Controller = str_replace('/', '', $this->Uri[2]);
+					if($this->Uri[$i] != '' && $this->Uri[$i] != '/')
+						$this->Action = str_replace('/', '', $this->Uri[$i]);
 				}
 			}
+		}elseif (MODE == "DEV") {
+			if(count($this->Uri) == 2 || count($this->Uri) < 2 ){
 
-			// Si se ha especificado la acción
-			$i = $this->Area == null ? 3 : 4;
-			if(isset($this->Uri[$i]))
-			{
-				if($this->Uri[$i] != '' && $this->Uri[$i] != '/')
-					$this->Action = str_replace('/', '', $this->Uri[$i]);
+				$this->Controller = _DEFAULT_CONTROLLER_;
+
+			}elseif (count($this->Uri) > 2) {
+				/**
+				 * Si en la URL por defecto no hay referencia de un controlador, 
+				 * cargamos el que esta por defecto
+				 */
+				if($this->Uri[2] == '' || $this->Uri[2] == '/' || $this->Uri[2] == 'index'){
+
+					$this->Controller = _DEFAULT_CONTROLLER_;
+					
+				}else{
+					// Verificamos si es un Area
+					if(is_dir( _BASE_FOLDER_ . 'controllers/' . $this->Uri[2] ))
+					{
+						$this->Area = $this->Uri[2];
+						$this->Controller = str_replace('/', '', $this->Uri[3]);
+					}
+					else
+					{
+						$this->Controller = str_replace('/', '', $this->Uri[2]);
+					}
+				}
+
+				// Si se ha especificado la acción
+				$i = $this->Area == null ? 3 : 4;
+				if(isset($this->Uri[$i]))
+				{
+					if($this->Uri[$i] != '' && $this->Uri[$i] != '/'){
+						$this->Action = str_replace('/', '', $this->Uri[$i]);
+					}
+				}
 			}
 		}
-
 		if(!$reload)
 		{
 			// Guardamos la ruta del controlador
 			$_Controller = 'controllers/' . ($this->Area == null ? '' : $this->Area . '/') . $this->Controller . '.php';
-
-
 			// Verificamos que la vista exista
 			if (! file_exists ( $_Controller )){
 				ErrorController::Show(1, $this);

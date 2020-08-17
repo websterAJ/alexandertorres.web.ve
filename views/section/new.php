@@ -33,7 +33,7 @@
 								<select id="categoria" name="categoria" class="form-control">
 									<option value="null" selected>Seleccione una Categoria</option>
 										<?php foreach ($this->Attach['data']['categoria'] as $value): ?>
-											<option value="<?= $value['id'] ?>" ><?= $value['Nombre'] ?></option>
+											<option value="<?= $value['id'] ?>" ><?= $value['nombre'] ?></option>
 										<?php endforeach ?>
 								</select>
 							</div>
@@ -63,7 +63,7 @@
 						<div class="form-group col-sm-12 col-xl-12 col-md-12 mt-1">
 							<h4>Descripcion</h4>
 							<input type="text" id="validador" hidden value="true">
-							<textarea id="contenido" name="contenido"></textarea>
+							<textarea id="descripcion" name="descripcion"></textarea>
 						</div>
 						<div class="form-group col-sm-12 col-xl-12 col-md-12 mt-1">
 							<h4>Repositorio</h4>
@@ -187,14 +187,22 @@
 		                    }
 	                	});
 					}
-				}); 
-
-				$('#form_new').submit(function(event) {
+				});
+				$('#form_new').submit(function(event){
 					event.preventDefault();
 					var formData = new FormData(this);
-					formData.append("sub_modulo", '<?= $this->Attach['sub_modulo']?>');
-					formData.append("descripcion", CKEDITOR.instances['descripcion'].getData());
-					formData.append("contenido", CKEDITOR.instances['contenido'].getData());
+					var subModulo ="<?= $this->Attach['sub_modulo']?>";
+
+					if(CKEDITOR.instances['contenido'] !== undefined){
+						formData.append("contenido", CKEDITOR.instances['contenido'].getData());
+					}
+
+					if(CKEDITOR.instances['descripcion'] !== undefined){
+						formData.append("descripcion", CKEDITOR.instances['descripcion'].getData());
+					}
+						
+					formData.append("sub_modulo", subModulo);
+					
 					var p = new Array();
 					
 					if (sub_modulo == 'permisos') {
@@ -244,8 +252,9 @@
 		        				      },2000);
 		                    },
 		                    success: function(response){
-								console.log(response);
-		                    	//alert(response, window.location="<?php echo _BASE_URL_;?>index.php/dashboard/");
+		                    	console.log(response);
+		                    	$("#mensaje").html('<div class="alert alert-success text-center text-success w-100">'+response+'</div>');
+		                    	$("#mensaje").fadeOut(1500);
 		                    }
 	                	});				
 					}

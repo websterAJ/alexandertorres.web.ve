@@ -32,9 +32,9 @@
   
   <script src="<?php echo $this->BaseUrl('assets/js/core/popper.min.js');?>" type="text/javascript"></script>
   <script src="<?php echo $this->BaseUrl('assets/js/core/bootstrap-material-design.min.js');?>" type="text/javascript"></script>
-  <script src="<?php echo $this->BaseUrl('assets/js/moment.min.js');?>"></script>
+  <script src="<?php echo $this->BaseUrl('assets/js/moment.js');?>"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="<?php echo $this->BaseUrl('assets/js/bootstrap-datetimepicker.js')?>" type="text/javascript"></script>
+  <script src="<?php echo $this->BaseUrl('assets/js/bootstrap-datetimepicker.min.js')?>" type="text/javascript"></script>
   <script src="<?php echo $this->BaseUrl('assets/js/material-kit.min.js')?>" type="text/javascript"></script>
 
   <script>

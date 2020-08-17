@@ -2,7 +2,7 @@
 
 class translate {
 	
-	public function msg($data)
+	static function msg($data)
 	{
 		$messages = array(
 		'name_user' => 'Nombre de usuarios',

@@ -356,33 +356,32 @@ class dashboard extends controller
 
         if(isset($image)){
             //Ruta de la carpeta donde se guardarán las imagenes
-            $patch=_BASE_URL_.'uploads/blog/';
+            $patch=_BASE_FOLDER_.'uploads/blog/';
             //Parámetros optimización, resolución máxima permitida
             $max_ancho = 1280;
             $max_alto = 900;
+            if($image['imagen']['type']=='image/png' || $image['imagen']['type']=='image/jpeg' || $image['imagen']['type']=='image/gif'){
             
-            if($image['images']['type']=='image/png' || $image['images']['type']=='image/jpeg' || $image['images']['type']=='image/gif'){
-            
-                $medidasimagen= getimagesize($image['images']['tmp_name']);
+                $medidasimagen= getimagesize($image['imagen']['tmp_name']);
             
                 //Si las imagenes tienen una resolución y un peso aceptable se suben tal cual
-                if($medidasimagen[0] < 1280 && $_FILES['images']['size'] < 100000){
-                    $nombrearchivo=$_FILES['images']['name'];
-                    move_uploaded_file($_FILES['images']['tmp_name'], $patch.'/'.$nombrearchivo);
+                if($medidasimagen[0] < 1280 && $_FILES['imagen']['size'] < 100000){
+                    $nombrearchivo=$_FILES['imagen']['name'];
+                    move_uploaded_file($_FILES['imagen']['tmp_name'], $patch.'/'.$nombrearchivo);
                 }
                 //Si no, se generan nuevas imagenes optimizadas
                 else {
             
-                    $nombrearchivo=$image['images']['name'];
+                    $nombrearchivo=$image['imagen']['name'];
                 
                     //Redimensionar
-                    $rtOriginal=$image['images']['tmp_name'];
+                    $rtOriginal=$image['imagen']['tmp_name'];
                 
-                    if($image['images']['type']=='image/jpeg'){
+                    if($image['imagen']['type']=='image/jpeg'){
                         $original = imagecreatefromjpeg($rtOriginal);
-                    }else if($image['images']['type']=='image/png'){
+                    }else if($image['imagen']['type']=='image/png'){
                         $original = imagecreatefrompng($rtOriginal);
-                    }else if($image['images']['type']=='image/gif'){
+                    }else if($image['imagen']['type']=='image/gif'){
                         $original = imagecreatefromgif($rtOriginal);
                     }
                 
@@ -408,14 +407,14 @@ class dashboard extends controller
                     imagecopyresampled($lienzo,$original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
                     $cal=8;
                     $ruta = "";
-                    if($image['images']['type']=='image/jpeg'){
-                        $ruta = $patch.$nombrearchivo.'jpeg';
+                    if($image['imagen']['type']=='image/jpeg'){
+                        $ruta = _BASE_URL_.'uploads/blog/'.$nombrearchivo;
                         imagejpeg($lienzo,$patch.$nombrearchivo);
-                    }else if($image['images']['type']=='image/png'){
-                        $ruta = $patch.$nombrearchivo.'png';
+                    }else if($image['imagen']['type']=='image/png'){
+                        $ruta = _BASE_URL_.'uploads/blog/'.$nombrearchivo;
                         imagepng($lienzo,$patch.$nombrearchivo);
-                    }else if($image['images']['type']=='image/gif'){
-                        $ruta = $patch.$nombrearchivo.'gif';
+                    }else if($image['imagen']['type']=='image/gif'){
+                        $ruta = _BASE_URL_.'uploads/blog/'.$nombrearchivo;
                         imagegif($lienzo,$patch.$nombrearchivo);
                     }
                 }
@@ -426,19 +425,40 @@ class dashboard extends controller
         }
     }
     public function insert(){
+        $table = $_POST['sub_modulo'];
+        $array= array();
         foreach ($_POST as $key => $value) {
-            if($_POST['sub_modulo'] == 'Proyecto' && $key == 'contenido'){
-                $array["`".'descripcion'."`"] = $value;
-            }elseif( $key <> 'sub_modulo'){
-                $array["`".strtolower($key)."`"] = $value;
+            if( $key <> 'sub_modulo'){
+                if ($_POST['sub_modulo'] == 'Articulo') {
+                    switch ($key) {
+                        case 'nombre':
+                            $array["`titulo`"] = $value;
+                            break;
+                        case 'descripcion':
+                            $array["`contenido`"] = $value;
+                            break;
+                        case 'fecha':
+                            $array["`fecha_publicacion`"] = date('Y-m-d H:m:s');
+                            break;
+                        default:
+                            $array["`".strtolower($key)."`"] = $value;
+                            break;
+                    }
+                    $array["`tipo`"] = 1;
+                }else{
+                    $array["`".strtolower($key)."`"] = $value;
+                }
+                
             }
+            
         }
         if($_POST['sub_modulo'] == 'Articulo'){
+            $table = 'contenidos';
             if(!empty($_FILES)){
-                $array["`imagen`"] =$this->opti_img($_FILES);
+                $array["`imagen`"] = $this->opti_img($_FILES);
             }
         }
-        $agg=$this->Dm->insertData($array, strtolower($_POST['sub_modulo']));
+        $agg=$this->Dm->insertData($array, strtolower($table));
         if($agg==''){
             echo 'Datos registrados con exitos';
         }else{

@@ -62,8 +62,14 @@ class inicio extends controller
             $array['status'] = 0;
             $array['de'] = $_POST['nombre'].' ('.$_POST['correo'].')';
             $array['para'] = 'Adminitrador';
-            $array['asunto'] = 'Formulario de contactato';
+            $array['asunto'] = 'Formulario de contacto';
             $array['contenido'] = $_POST['mensaje'];
+            $inicio = $this->ini->InsertData($array,'mensajes');
+            if($inicio){
+                echo "1";
+            }else{
+                echo $inicio;
+            }
         }else{
             $this->Layout = true;
             $this->LoadView('pages/contact');
@@ -76,30 +82,34 @@ class inicio extends controller
 				"persona.nombre, persona.email,usuario.nick, usuario.clave, usuario.condicion, usuario.rol, usuario.persona",
 				"nick ='".$_POST['user']."' OR email ='".$_POST['user']."'"
 			);
-			$response=$response[0];
-			if (password_verify($_POST['pass'], $response["clave"])) {
-				session::start();
-				session::setsession('user',$response['nick']);
-				session::setsession('type',$response['rol']);
-				session::setsession('id',$response['persona']);
-				if (isset($response['avatar'])) {
-					session::setsession('avatar',$response['avatar']);
-				}
-				session::setsession('autch','TRUE');
-				$array['Ultimo_inicio'] =date('Y-m-d h:i:s');
-				$array['user']=$response['nick'];
-				$array['type_his']=1;
-                $inicio = $this->ini->UserActive($array);
-                echo $inicio;
-                die;
-				if (empty($inicio)) {
-					echo 1;
-				}else{
-					echo $inicio;
-				}
-			}else{
-				echo "error contraseña";
-			}
+            if (count($response) > 0) {
+                $response = $response[0];
+                if (password_verify($_POST['pass'], $response["clave"])) {
+                    session::start();
+                    session::setsession('user',$response['nick']);
+                    session::setsession('type',$response['rol']);
+                    session::setsession('id',$response['persona']);
+                    if (isset($response['avatar'])) {
+                        session::setsession('avatar',$response['avatar']);
+                    }
+                    session::setsession('autch','TRUE');
+                    $array['Ultimo_inicio'] =date('Y-m-d h:i:s');
+                    $array['user']=$response['nick'];
+                    $array['type_his']=1;
+                    $inicio = $this->ini->UserActive($array);
+                    echo $inicio;
+                    die;
+                    if (empty($inicio)) {
+                        echo 1;
+                    }else{
+                        echo $inicio;
+                    }
+                }else{
+                    echo "error contraseña";
+                }
+            }else{
+                echo "Usuario no encontrado";
+            }
         }else{
             $this->Layout = false;
             $this->LoadView('pages/login');

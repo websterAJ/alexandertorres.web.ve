@@ -6,11 +6,11 @@ class session{
         session_start();
     }
     //Obtenemos el valor de uno de los indice de sesion
-    public function getsession($name){
+    static function getsession($name){
         return $_SESSION[$name];
     }
     //Inicialisamos un valor
-    public function setsession($name, $data){
+    static function setsession($name, $data){
         $_SESSION[$name] = $data;
     }
     //Destruye la sesion

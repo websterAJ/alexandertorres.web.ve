@@ -4,9 +4,8 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="<?php echo $this->BaseUrl('assets/img/logo.png');?>" width="35">
+          <img src="<?php echo $this->BaseUrl('assets/img/logo.png');?>" width="100">
         </div>
-        <div class="sidebar-brand-text mx-3"> Reportes</div>
       </a>
 
       <!-- Divider -->

@@ -103,27 +103,39 @@
                     $("#mensaje").fadeOut(1500);
                 },2000);
             }else{
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'login', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onload = function (response) {
-                    if(this.responseText == 1){
-                        document.location = "<?php echo _BASE_URL_; ?>index.php/dashboard";
-                    }else{
+                $.ajax({
+                    url: '<?php echo _BASE_URL_; ?>index.php/inicio/login',
+                    type: 'POST',
+                    data: {user: user,pass: pass},
+                    beforeSend: function(objeto){
+                      setTimeout(function() {
+                        $("#mensaje").html('<div class="alert alert-success text-center text-success w-100">Cargando......</div>');
+                            },1000);
+                              setTimeout(function() {
+                                $("#mensaje").fadeOut(1500);
+                              },2000);
+                    },
+                    success: function(response){
+                        if(response == 1){
+                            document.location = "<?php echo _BASE_URL_; ?>index.php/dashboard";
+                        }else{
+                            setTimeout(function() {
+                            $("#mensaje").html(
+                                    '<div class="alert alert-warning">'+response+'</div>');
+                            },1000);
+                        }
+                    },
+                    error:function(response){
                         setTimeout(function() {
-                            $("#mensaje").html('<div class="alert alert-warning">'+this.responseText+'</div>');
+                            $("#mensaje").html('<div class="alert alert-warning">'+response+'</div>');
                         },1000);
                         setTimeout(function() {
                             $("#mensaje").fadeOut(1500);
                         },2000);
                     }
-                };
-                xhr.send('user='+user+'&pass='+pass);
+                });
             }
         });
-        
     </script>
-
-
 </body>
 </html>
